@@ -21,7 +21,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeRepository employeeRepository;
     //http://localhost:8080/api/save
-   @PostMapping("save")
+   @PostMapping("/save")
    @Operation(description = "save Employee", summary = "save Employee",
    tags ="Employee Controller Layer",
    responses = {
@@ -33,18 +33,30 @@ public class EmployeeController {
 
     }
     @GetMapping("/show")
-    @Tag(name = "Employee Controller Layer")
-    public Employee show(@RequestParam Long id){
-      return   employeeRepository.findById(id).get();
+    @Operation(description = "show Employee ",summary = "show Employee ",
+    tags = "Employee Controller Layer",
+    responses = {
+            @ApiResponse(responseCode = "200", description = "Success")
+    })
+    public ResponseEntity<Employee> show(@RequestParam Long id){
+      return ResponseEntity.status(HttpStatus.OK).body(
+
+                employeeRepository.findById(id).get());
     }
     @DeleteMapping("/delete")
-    @Tag(name = "Employee Controller Layer")
-    public void delete(@RequestParam Long id){
+    @Operation(description = "delete Employee", summary = "delete Employee",
+            tags ="Employee Controller Layer",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Success")
+            })    public void delete(@RequestParam Long id){
         employeeRepository.deleteById(id);
     }
     @PutMapping("/edit")
-    @Tag(name = "Employee Controller Layer")
-    public Employee edit(@RequestBody Employee employee){
+    @Operation(description = "edit Employee", summary = "edit Employee",
+            tags ="Employee Controller Layer",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK")
+            })    public Employee edit(@RequestBody Employee employee){
         return   employeeRepository.save(employee);
     }
 }
